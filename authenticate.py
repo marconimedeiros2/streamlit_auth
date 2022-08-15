@@ -4,7 +4,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 import extra_streamlit_components as stx
 
-import hasher as Hasher
+import hasher
 from utils import generate_random_pw
 
 from exceptions import CredentialsError, ResetError, RegisterError, ForgotError, UpdateError
@@ -223,7 +223,7 @@ class Authenticate:
         password: str
             The updated plain text password.
         """
-        self.credentials['usernames'][username]['password'] = Hasher([password]).generate()[0]
+        self.credentials['usernames'][username]['password'] = hasher.Hasher([password]).generate()[0]
 
     def reset_password(self, username: str, form_name: str, location: str='main') -> bool:
         """
@@ -288,7 +288,7 @@ class Authenticate:
             False: any user can register.
         """
         self.credentials['usernames'][username] = {'name': name, 
-            'password': Hasher([password]).generate()[0], 'email': email}
+            'password': hasher.Hasher([password]).generate()[0], 'email': email}
         if preauthorization:
             self.preauthorized['emails'].remove(email)
 
@@ -358,7 +358,7 @@ class Authenticate:
             New plain text password that should be transferred to user securely.
         """
         self.random_password = generate_random_pw()
-        self.credentials['usernames'][username]['password'] = Hasher([self.random_password]).generate()[0]
+        self.credentials['usernames'][username]['password'] = hasher.Hasher([self.random_password]).generate()[0]
         return self.random_password
 
     def forgot_password(self, form_name: str, location: str='main') -> tuple:

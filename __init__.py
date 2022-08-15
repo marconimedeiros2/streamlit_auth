@@ -3,20 +3,20 @@ import streamlit as st
 from yaml.loader import SafeLoader
 # import streamlit.components.v1 as components
 
-import hasher as Hasher
-import authenticate as Authenticate
+import hasher
+import authenticate
 
 _RELEASE = True
 
 if not _RELEASE:
-    hashed_passwords = Hasher(['123', '456']).generate()
+    hashed_passwords = hasher.Hasher(['123', '456']).generate()
 
     # Loading config file
     with open('config.yaml') as file:
         config = yaml.load(file, Loader=SafeLoader)
 
     # Creating the authenticator object
-    authenticator = Authenticate(
+    authenticator = authenticate.Authenticate(
         config['credentials'],
         config['cookie']['name'], 
         config['cookie']['key'], 
