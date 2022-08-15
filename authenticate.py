@@ -4,7 +4,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 import extra_streamlit_components as stx
 
-from hasher import Hasher
+import hasher as Hasher
 from utils import generate_random_pw
 
 from exceptions import CredentialsError, ResetError, RegisterError, ForgotError, UpdateError
