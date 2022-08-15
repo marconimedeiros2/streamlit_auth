@@ -1,7 +1,7 @@
 import yaml
 import streamlit as st
 from yaml.loader import SafeLoader
-import streamlit.components.v1 as components
+# import streamlit.components.v1 as components
 
 from .hasher import Hasher
 from .authenticate import Authenticate
@@ -9,7 +9,7 @@ from .authenticate import Authenticate
 _RELEASE = True
 
 if not _RELEASE:
-    # hashed_passwords = Hasher(['123', '456']).generate()
+    hashed_passwords = Hasher(['123', '456']).generate()
 
     # Loading config file
     with open('config.yaml') as file:
