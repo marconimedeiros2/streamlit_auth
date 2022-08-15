@@ -12,7 +12,7 @@ if not _RELEASE:
     # hashed_passwords = Hasher(['123', '456']).generate()
 
     # Loading config file
-    with open('./config.yaml') as file:
+    with open('config.yaml') as file:
         config = yaml.load(file, Loader=SafeLoader)
 
     # Creating the authenticator object
@@ -81,7 +81,7 @@ if not _RELEASE:
             st.error(e)
 
     # Saving config file
-    with open('../config.yaml', 'w') as file:
+    with open('config.yaml', 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
 
     # Alternatively you may use st.session_state['name'], st.session_state['authentication_status'], 
