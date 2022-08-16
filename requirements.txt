@@ -1,3 +1,2 @@
 streamlit
-pycryptodome
-pyrebase
+pyrebase4
