@@ -9,7 +9,7 @@ from io import StringIO
 import pandas as pd
 import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="streamlit-files-8a01931f1d2a.json"
-import json
+import csv
 from google.cloud import pubsub_v1
 from concurrent.futures import TimeoutError
 import time
@@ -34,7 +34,7 @@ PUB_SUB_SUBSCRIPTION = "streamlit-file-sub"
 def push_payload(payload, topic, project):        
         publisher = pubsub_v1.PublisherClient() 
         topic_path = publisher.topic_path(project, topic)        
-        data = bin(payload)      
+        data = csv.Dialect(payload)      
         future = publisher.publish(topic_path, data=data)
         print("Pushed message to topic.")   
     
