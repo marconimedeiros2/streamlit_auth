@@ -1,3 +1,4 @@
+from numpy import place
 import pyrebase
 import streamlit as st
 from datetime import datetime
@@ -40,8 +41,8 @@ if ~authenticate:
       if submit:
         user = auth.create_user_with_email_and_password(email, password)
         authenticate = True
-        st.success('Usuário criado com sucesso')
-        st.balloons()
+        placeholder.success('Usuário criado com sucesso')
+        placeholder.balloons()
     
     else:
       enter = st.form_submit_button('Entrar')
