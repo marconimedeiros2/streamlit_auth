@@ -44,9 +44,9 @@ if ~authenticate:
         st.success('Usuário criado com sucesso')
         st.balloons()
       
-  if enter:  
-    user = auth.sign_in_with_email_and_password(email, password)
-    authenticate = True
+    if enter:  
+      user = auth.sign_in_with_email_and_password(email, password)
+      authenticate = True
 
 if user:
   placeholder.empty()
