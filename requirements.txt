@@ -1,5 +1,1 @@
-PyJWT
-bcrypt
-PyYAML
 streamlit
-extra-streamlit-components
