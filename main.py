@@ -34,7 +34,7 @@ PUB_SUB_SUBSCRIPTION = "streamlit-file-sub"
 def push_payload(payload, topic, project):        
         publisher = pubsub_v1.PublisherClient() 
         topic_path = publisher.topic_path(project, topic)        
-        data = payload       
+        data = str(payload)       
         future = publisher.publish(topic_path, data=data)
         print("Pushed message to topic.")   
     
@@ -89,8 +89,8 @@ if st.session_state.key:
   if uploaded_file:
     print('subiu arquivo')
     # c.write("Arquivo selecionado: " + uploaded_file)
+    push_payload(uploaded_file, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
     df = pd.read_csv(uploaded_file, sep=";", encoding='Latin-1')
-    push_payload(df, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
     c.write(df)
 
 
