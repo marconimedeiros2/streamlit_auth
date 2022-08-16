@@ -1,2 +1,3 @@
 streamlit
 pyrebase4
+pubsub_v1
