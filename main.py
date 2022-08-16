@@ -7,6 +7,12 @@ from datetime import datetime
 from io import StringIO
 # import firebaseConfig as fc
 import pandas as pd
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="streamlit-files-8a01931f1d2a.json"
+import json
+from google.cloud import pubsub_v1
+from concurrent.futures import TimeoutError
+import time
 
 firebaseConfig = {
   'apiKey': "AIzaSyDmaICrJnzE6_mkwsFLwMGDHys-a-5cL1s",
@@ -18,6 +24,20 @@ firebaseConfig = {
   'appId': "1:132852245968:web:231b2521c6870cbbccc5d5",
   'measurementId': "G-TWNT2X9R59"
   }
+
+# GCP topic, project & subscription ids
+PUB_SUB_TOPIC = "streamlit-file"
+PUB_SUB_PROJECT = "streamlit-files"
+PUB_SUB_SUBSCRIPTION = "streamlit-file-sub"
+
+# producer function to push a message to a topic
+def push_payload(payload, topic, project):        
+        publisher = pubsub_v1.PublisherClient() 
+        topic_path = publisher.topic_path(project, topic)        
+        data = json.dumps(payload).encode("utf-8")           
+        future = publisher.publish(topic_path, data=data)
+        print("Pushed message to topic.")   
+    
 # firebase authentication
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
@@ -68,6 +88,7 @@ if st.session_state.key:
 
   if uploaded_file:
     print('subiu arquivo')
+    push_payload(uploaded_file, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
     # c.write("Arquivo selecionado: " + uploaded_file)
     df = pd.read_csv(uploaded_file, sep=";", encoding='latin-1')
     c.write(df)
