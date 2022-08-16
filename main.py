@@ -5,7 +5,7 @@ import pyrebase
 import streamlit as st
 from datetime import datetime
 from io import StringIO
-import firebaseConfig as fc
+# import firebaseConfig as fc
 import pandas as pd
 
 firebaseConfig = {
