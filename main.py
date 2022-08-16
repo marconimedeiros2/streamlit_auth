@@ -33,7 +33,6 @@ if ~authenticate:
     choice = st.selectbox('Entrar/Registrar', ['Entrar', 'Registrar'])
     email = st.text_input('Informar e-mail')
     password = st.text_input('Informar password', type='password')
-    enter = st.form_submit_button('Entrar')
 
     if choice == 'Registrar':
       submit = st.form_submit_button('Registrar')
@@ -43,10 +42,12 @@ if ~authenticate:
         authenticate = True
         st.success('Usuário criado com sucesso')
         st.balloons()
-      
-    if enter:  
-      user = auth.sign_in_with_email_and_password(email, password)
-      authenticate = True
+    
+    else:
+      enter = st.form_submit_button('Entrar')
+      if enter:  
+        user = auth.sign_in_with_email_and_password(email, password)
+        authenticate = True
 
 if user:
   placeholder.empty()
