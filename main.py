@@ -8,9 +8,18 @@ from io import StringIO
 import firebaseConfig as fc
 import pandas as pd
 
-
+firebaseConfig = {
+  'apiKey': "AIzaSyDmaICrJnzE6_mkwsFLwMGDHys-a-5cL1s",
+  'authDomain': "streamlit-firebase-mapfre.firebaseapp.com",
+  'projectId': "streamlit-firebase-mapfre",
+  'databaseURL': "https://streamlit-firebase-mapfre-default-rtdb.firebaseio.com/",
+  'storageBucket': "streamlit-firebase-mapfre.appspot.com",
+  'messagingSenderId': "132852245968",
+  'appId': "1:132852245968:web:231b2521c6870cbbccc5d5",
+  'measurementId': "G-TWNT2X9R59"
+  }
 # firebase authentication
-firebase = pyrebase.initialize_app(fc.firebaseConfig)
+firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
 # database
