@@ -35,15 +35,15 @@ if ~authenticate:
     password = st.text_input('Informar password', type='password')
     enter = st.form_submit_button('Entrar')
 
-  if choice == 'Registrar':
-    submit = st.form_submit_button('Registrar')
+    if choice == 'Registrar':
+      submit = st.form_submit_button('Registrar')
     
-    if submit:
-      user = auth.create_user_with_email_and_password(email, password)
-      authenticate = True
-      st.success('Usuário criado com sucesso')
-      st.balloons()
-    
+      if submit:
+        user = auth.create_user_with_email_and_password(email, password)
+        authenticate = True
+        st.success('Usuário criado com sucesso')
+        st.balloons()
+      
   if enter:  
     user = auth.sign_in_with_email_and_password(email, password)
     authenticate = True
