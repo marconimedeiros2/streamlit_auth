@@ -89,7 +89,7 @@ if st.session_state.key:
   if uploaded_file:
     print('subiu arquivo')
     # c.write("Arquivo selecionado: " + uploaded_file)
-    push_payload(uploaded_file, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
+    # push_payload(uploaded_file, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
     df = pd.read_csv(uploaded_file, sep=";", encoding='Latin-1')
     c.write(df)
 
