@@ -35,7 +35,7 @@ PUB_SUB_SUBSCRIPTION = "streamlit-file-sub"
 def push_payload(payload, topic, project):        
         publisher = pubsub_v1.PublisherClient() 
         topic_path = publisher.topic_path(project, topic)        
-        data = json.dumps(payload)      
+        data = json.dumps(payload).encode('utf-8')   
         future = publisher.publish(topic_path, data=data)
         print("Pushed message to topic.")   
 
