@@ -38,17 +38,6 @@ def push_payload(payload, topic, project):
         data = json.dumps(payload).encode('utf-8')   
         future = publisher.publish(topic_path, data=data)
         print("Pushed message to topic.")   
-
-# convert csv to json
-def csv_to_json(csvFile):
-    jsonArray = []  
-    #convert each csv row into python dict
-    for row in csvFile: 
-        #add this python dict to json array
-        jsonArray.append(row)
-
-    #convert python jsonArray to JSON String
-    return jsonArray
           
 # firebase authentication
 firebase = pyrebase.initialize_app(firebaseConfig)
@@ -100,20 +89,11 @@ if st.session_state.key:
 
   if uploaded_file:
     print('subiu arquivo')
-    try:        
-      encoding = 'gb18030'
-      s=str(uploaded_file,encoding)
-    
-    except:
-      encoding = 'utf-16-le' 
-      s=str(uploaded_file,encoding)
 
-    data = StringIO(s)
-    data = data['content'].fillna('').astype(str)
-    json_file = csv_to_json(data)
-
-    push_payload(json_file, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
-    df = pd.read_csv(uploaded_file, sep=";", encoding='Latin-1')
+    df = pd.read_csv(uploaded_file, sep=";", encoding='utf-8')
     c.write(df)
+    
+    out = df.to_json(orient='records')[1:-1]
+    push_payload(out, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
 
 
