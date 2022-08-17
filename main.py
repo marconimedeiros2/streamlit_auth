@@ -10,6 +10,7 @@ import pandas as pd
 import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="streamlit-files-8a01931f1d2a.json"
 import csv
+import json
 from google.cloud import pubsub_v1
 from concurrent.futures import TimeoutError
 import time
@@ -34,10 +35,26 @@ PUB_SUB_SUBSCRIPTION = "streamlit-file-sub"
 def push_payload(payload, topic, project):        
         publisher = pubsub_v1.PublisherClient() 
         topic_path = publisher.topic_path(project, topic)        
-        data = csv.DictReader(payload)      
+        data = json.dumps(payload)      
         future = publisher.publish(topic_path, data=data)
         print("Pushed message to topic.")   
-    
+
+# convert csv to json
+def csv_to_json(csvFilePath):
+    jsonArray = []  
+    #read csv file
+    with open(csvFilePath, encoding='utf-8') as csvf: 
+        #load csv file data using csv library's dictionary reader
+        csvReader = csv.DictReader(csvf) 
+
+        #convert each csv row into python dict
+        for row in csvReader: 
+            #add this python dict to json array
+            jsonArray.append(row)
+  
+    #convert python jsonArray to JSON String
+        return jsonArray
+          
 # firebase authentication
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
@@ -89,7 +106,10 @@ if st.session_state.key:
   if uploaded_file:
     print('subiu arquivo')
     # c.write("Arquivo selecionado: " + uploaded_file)
-    # push_payload(uploaded_file, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
+    
+    json_file = csv_to_json(uploaded_file)
+
+    push_payload(json_file, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
     df = pd.read_csv(uploaded_file, sep=";", encoding='Latin-1')
     c.write(df)
 
