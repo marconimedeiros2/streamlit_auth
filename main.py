@@ -43,7 +43,7 @@ def push_payload(payload, topic, project):
 def csv_to_json(csvFile):
     jsonArray = []  
     #read csv file
-    with open(csvFile, encoding='utf-8') as csvf: 
+    with csvFile as csvf: 
         #load csv file data using csv library's dictionary reader
         csvReader = csv.DictReader(csvf) 
         #convert each csv row into python dict
