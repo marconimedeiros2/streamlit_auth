@@ -90,7 +90,7 @@ if st.session_state.key:
   if uploaded_file:
     print('subiu arquivo')
 
-    df = pd.read_csv(uploaded_file, sep=";", encoding='utf-8')
+    df = pd.read_csv(uploaded_file, sep=";", encoding='latin-1')
     c.write(df)
     
     out = df.to_json(orient='records')[1:-1]
