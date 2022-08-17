@@ -101,8 +101,9 @@ if st.session_state.key:
   if uploaded_file:
     print('subiu arquivo')
     # c.write("Arquivo selecionado: " + uploaded_file)
-    
-    json_file = csv_to_json(uploaded_file)
+    bytes_data = uploaded_file.read()
+    s=str(bytes_data, 'utf-8')
+    json_file = csv_to_json(s)
 
     push_payload(json_file, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
     df = pd.read_csv(uploaded_file, sep=";", encoding='Latin-1')
