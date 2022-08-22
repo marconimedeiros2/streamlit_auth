@@ -1,10 +1,9 @@
 from cgi import print_environ
 from re import sub
+from tkinter import Grid
 from numpy import place
 import pyrebase
 import streamlit as st
-from datetime import datetime
-from io import StringIO
 # import firebaseConfig as fc
 import pandas as pd
 import os
@@ -12,8 +11,8 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="streamlit-files-8a01931f1d2a.json"
 import csv
 import json
 from google.cloud import pubsub_v1
-from concurrent.futures import TimeoutError
-import time
+from st_aggrid import AgGrid, GridUpdateMode
+from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 firebaseConfig = {
   'apiKey': "AIzaSyDmaICrJnzE6_mkwsFLwMGDHys-a-5cL1s",
@@ -77,7 +76,37 @@ if ~st.session_state.key:
           user = auth.sign_in_with_email_and_password(email, password)
           db.child(user['localId']).child("Handle").set(email)
           db.child(user['localId']).child("ID").set(user['localId'])
-          
+
+# download dataframe
+@st.cache
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv(sep=';', encoding='latin1', header=True, decimal=',')
+
+# editable table
+def editable_df(df):
+  gd = GridOptionsBuilder.from_dataframe(df)
+  gd.configure_pagination(enabled=True)
+  gd.configure_default_column(editable=True, groupable=True, headerCheckboxSelection=True)
+  
+  sel_mode = st.radio('Selecione o tipo', options=['single','multiple'])
+  gd.configure_selection(selection_mode=sel_mode, use_checkbox=True)
+  grid_options = gd.build()
+  grid_table = AgGrid(df, theme='dark', try_to_convert_back_to_original_types=False, gridOptions=grid_options, update_mode= GridUpdateMode.SELECTION_CHANGED | GridUpdateMode.VALUE_CHANGED, allow_unsafe_jscode=True, height=500 )
+  sel_row = grid_table['selected_rows']
+  
+  df = pd.DataFrame(sel_row)
+  csv = convert_df(df).decode('utf-8')
+  st.download_button(
+    label="Download tabela modificada como CSV",
+    data=csv,
+    file_name='dados_alterados.csv',
+    mime='text/csv',  
+  )
+  st.subheader('Linhas atualizadas: ')
+  st.write(sel_row)
+    
+  
 if st.session_state.key:
   placeholder.empty()
   c = st.container()
@@ -91,7 +120,7 @@ if st.session_state.key:
     print('subiu arquivo')
 
     df = pd.read_csv(uploaded_file, sep=";", encoding='latin-1')
-    c.write(df)
+    editable_df(df)
     
     out = df.to_json(orient='records')[1:-1]
     push_payload(out, PUB_SUB_TOPIC, PUB_SUB_PROJECT)
