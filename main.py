@@ -96,7 +96,7 @@ def editable_df(df):
   sel_row = grid_table['selected_rows']
   
   df = pd.DataFrame(sel_row)
-  csv = convert_df(df).decode('utf-8')
+  csv = convert_df(df)
   st.download_button(
     label="Download tabela modificada como CSV",
     data=csv,
