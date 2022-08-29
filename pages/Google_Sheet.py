@@ -2,17 +2,8 @@ import streamlit as st
 import pandas as pd
 from gsheetsdb import connect
 import pyrebase
-from gspread_pandas import Spread,Client
 from google.oauth2 import service_account
 import webbrowser
-# Application Related Module
-import pubchempy as pcp
-from pysmiles import read_smiles
-# 
-import networkx as nx
-import matplotlib.pyplot as plt
-
-from datetime import datetime
 
 # Disable certificate verification (Not necessary always)
 import ssl
@@ -117,3 +108,4 @@ if st.session_state.key:
   with col2:
     csv = convert_df(df)
     st.download_button(label="Download o GoogleSheet em formato csv", data=csv,file_name='google_sheet.csv', mime='text/csv')
+
