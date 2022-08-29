@@ -1,1 +1,4 @@
 firebase*
+*.toml
+streamlit/*.toml
+*.json
